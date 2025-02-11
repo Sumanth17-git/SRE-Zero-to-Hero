@@ -30,6 +30,76 @@ terraform-gcp-infra/
 
 │── README.md # Project documentation
 
-│── .gitignore # Ignore sensitive files like credentials
+**Pre-requisites**
 
-│── terraform.tfstate # Terraform state file (not committed)
+1. Authenticate GCP CLI:
+Ensure your **GCP project** is set up and has:
+    - Compute Engine API enabled
+    - Cloud Storage API enabled
+    - IAM permissions for the Terraform service account
+# Step-by-Step Setup
+**Step 1: Clone the Repository**
+```bash
+git clone https://github.com/Sumanth17-git/SRE-Zero-to-Hero.git
+cd terraform/terraform-gcp-workspace
+```
+**Step 2: Initialize Terraform**
+terraform init
+
+**Step 3: Select Workspace**
+Terraform uses **workspaces** to manage multiple environments (dev, production).
+- To create/select the **dev** environment:
+```bash
+terraform workspace new dev
+terraform workspace select dev
+```
+For **production**:
+```bash
+terraform workspace new production
+terraform workspace select production
+```
+**Step 4: Plan the Deployment**
+Run the Terraform plan command to preview the changes
+```bash
+terraform plan -var-file=dev.tfvars
+```
+This will show which resources will be created in the **development** environment.
+
+**Step 5: Apply the Terraform Configuration**
+To create the infrastructure, run:
+```bash
+terraform apply -var-file=dev.tfvars -auto-approve
+```
+- This will create:
+  - A **GCS Bucket** (dev-bucket-dev)
+  - **Compute Engine VMs** based on dev.tfvars:
+    - springboot-server in us-central1-a (Spot Instance)
+    - recos-server in us-east1-b (Standard Instance)
+**Step 6: Verify in GCP Console**
+
+After applying, go to:
+
+- **Compute Engine → VM Instances** to check your VMs.
+- **Cloud Storage → Buckets** to verify the created storage bucket.
+
+**Step 7: Destroy the Infrastructure (Optional)**
+
+To remove the infrastructure:
+```bash
+terraform destroy -var-file=dev.tfvars -auto-approve
+```
+**Configuration Details**
+
+**Terraform Workspaces**
+
+- **terraform.workspace** is used to differentiate environments.
+- Based on the selected workspace (dev or production), the correct **GCP project ID** and **credentials file** are assigned dynamically.
+
+**Compute Engine VM Configurations**
+
+- Defined in dev.tfvars with:
+  - **Name, machine type, image**
+  - **Region & Zone** (each VM can have different locations)
+  - **Spot (preemptible) option**
+  - **Custom labels**
+Example (dev.tfvars):
