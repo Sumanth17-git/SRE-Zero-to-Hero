@@ -26,12 +26,16 @@ terraform-gcp-infra/
 
 # Pre-requisites
 
-1.**Authenticate GCP CLI:**
+1. **Create two GCP projects**
+<img width="515" alt="image" src="https://github.com/user-attachments/assets/7b477bac-8a36-45d1-a9a1-e4424adab6e1" />
+
+2.**Authenticate GCP CLI:**
 Ensure your **GCP project** is set up and has:
     - Compute Engine API enabled
     - Cloud Storage API enabled
     - IAM permissions for the Terraform service account
-2.**Create IAM Service Account and generate the json key file and store it in secret place.**
+    
+2.**Create IAM Service Account on both gcp project and generate the json key file and store it in secret place.**
     ## **1️⃣ Go to the GCP Console**
     - Navigate to the **[Google Cloud Console](https://console.cloud.google.com/)**.
     ## **2️⃣ Access IAM & Admin**
@@ -63,9 +67,17 @@ Ensure your **GCP project** is set up and has:
 git clone https://github.com/Sumanth17-git/SRE-Zero-to-Hero.git
 cd terraform/terraform-gcp-workspace
 ```
+**Now Update the main.tf with new json key and project_id according to your both projects as like below**
+```bash
+locals {
+  project_id       = terraform.workspace == "dev" ? "aiops-447509" : "praxis-citron-447508-f8"
+  credentials_file = terraform.workspace == "dev" ? "C:/Training/terraform_projects/aiops-447509-c2d18fc9ac92.json" : "C:/Training/terraform_projects/praxis-citron-447508-f8-dc005b866fc4.json"
+}
+```
 **Step 2: Initialize Terraform**
+```bash
 terraform init
-
+```
 **Step 3: Select Workspace**
 Terraform uses **workspaces** to manage multiple environments (dev, production).
 - To create/select the **dev** environment:
@@ -96,27 +108,19 @@ terraform apply -var-file=dev.tfvars -auto-approve
     - springboot-server in us-central1-a (Spot Instance)
     - recos-server in us-east1-b (Standard Instance)
 **Step 6: Verify in GCP Console**
-
 After applying, go to:
-
 - **Compute Engine → VM Instances** to check your VMs.
 - **Cloud Storage → Buckets** to verify the created storage bucket.
-
 **Step 7: Destroy the Infrastructure (Optional)**
-
 To remove the infrastructure:
 ```bash
 terraform destroy -var-file=dev.tfvars -auto-approve
 ```
 **Configuration Details**
-
 **Terraform Workspaces**
-
 - **terraform.workspace** is used to differentiate environments.
 - Based on the selected workspace (dev or production), the correct **GCP project ID** and **credentials file** are assigned dynamically.
-
 **Compute Engine VM Configurations**
-
 - Defined in dev.tfvars with:
   - **Name, machine type, image**
   - **Region & Zone** (each VM can have different locations)
@@ -163,3 +167,4 @@ vms = [
   }
 ]
 ```
+You can add a new VM's 
