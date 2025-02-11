@@ -21,11 +21,10 @@ for different environments (e.g., `dev` and `production`).
 
 ---
 # Pre-requisites
-
 1. **Create two GCP projects**
 <img width="515" alt="image" src="https://github.com/user-attachments/assets/7b477bac-8a36-45d1-a9a1-e4424adab6e1" />
 
-# **🚀 Setting Up Authentication for Terraform with GCP**
+2.**🚀 Setting Up Authentication for Terraform with GCP**
 
 ## **1️⃣ Authenticate GCP CLI**
 Ensure your **GCP project** is properly set up and has:
