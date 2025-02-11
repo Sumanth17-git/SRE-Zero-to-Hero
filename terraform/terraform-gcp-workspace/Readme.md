@@ -3,10 +3,8 @@
 This project automates the provisioning of **Google Cloud Platform (GCP) resources** using **Terraform**.  
 It enables the deployment of **Compute Engine Virtual Machines (VMs) across multiple regions and zones**,  
 with support for **Spot (preemptible) and Standard instances**.  
-
-Additionally, the project manages a **Cloud Storage bucket** and utilizes **Terraform Workspaces**  
+Additionally, the project manages a Cloud Storage bucket and utilizes Terraform Workspaces
 for different environments (e.g., `dev` and `production`).
----
 
 ## **🌟 Project Features**
 - **Terraform Workspaces**: Supports **dev** and **production** environments.
@@ -27,40 +25,78 @@ for different environments (e.g., `dev` and `production`).
 1. **Create two GCP projects**
 <img width="515" alt="image" src="https://github.com/user-attachments/assets/7b477bac-8a36-45d1-a9a1-e4424adab6e1" />
 
-2.**Authenticate GCP CLI:**
-Ensure your **GCP project** is set up and has:
-    - Compute Engine API enabled
-    - Cloud Storage API enabled
-    - IAM permissions for the Terraform service account
-    
-2.**Create IAM Service Account on both gcp project and generate the json key file and store it in secret place.**
-    ## **1️⃣ Go to the GCP Console**
-    - Navigate to the **[Google Cloud Console](https://console.cloud.google.com/)**.
-    ## **2️⃣ Access IAM & Admin**
-    - In the **left-hand menu**, click on **IAM & Admin**.
-    ## **3️⃣ Create a Service Account**
-    - Click on **Service Accounts**.
-    - Click the **+ Create Service Account** button at the top.
-    ## **4️⃣ Provide Service Account Details**
-    - **Service Account Name**: Enter a name (e.g., `terraform-sa`).
-    - Click **Create and Continue**.
-    ## **5️⃣ Assign a Role**
-    - In the **Select a Role** dropdown, choose **Editor**.
-    - Click **Continue**.
-    ## **6️⃣ Complete the Process**
-    - Click **Done** to finish creating the service account.
-    ## ✅ **Next Steps**
-    - Generate a **JSON Key** to use this service account for Terraform authentication.
-      - Click on the **Service Account**.
-      - Go to the **Keys** tab.
-      - Click **Add Key > Create New Key**.
-      - Choose **JSON** and click **Create**.
-      - Download the **JSON file** and store it securely.
-    
-    🚀 Now, you can use this service account for **Terraform deployments in GCP**!
+# **🚀 Setting Up Authentication for Terraform with GCP**
+
+## **1️⃣ Authenticate GCP CLI**
+Ensure your **GCP project** is properly set up and has:
+- **✅ Compute Engine API enabled**
+- **✅ Cloud Storage API enabled**
+- **✅ IAM permissions assigned** for the Terraform service account
+# **🚀 Create IAM Service Account on Both GCP Projects & Generate JSON Key File**
+
+To deploy Terraform infrastructure on GCP, you need to **create a service account** on both GCP projects (e.g., `dev` and `prod`) and generate a **JSON key file** for authentication.
+
+---
+
+## **1️⃣ Go to the GCP Console**
+- Navigate to the **[Google Cloud Console](https://console.cloud.google.com/)**.
+
+---
+
+## **2️⃣ Access IAM & Admin**
+- In the **left-hand menu**, click on **IAM & Admin**.
+
+---
+
+## **3️⃣ Create a Service Account**
+- Click on **Service Accounts**.
+- Click the **+ Create Service Account** button at the top.
+
+---
+
+## **4️⃣ Provide Service Account Details**
+- **Service Account Name**: Enter a name (e.g., `terraform-sa`).
+- Click **Create and Continue**.
+
+---
+
+## **5️⃣ Assign a Role**
+- In the **Select a Role** dropdown, choose **Editor**.
+- Click **Continue**.
+
+---
+
+## **6️⃣ Complete the Process**
+- Click **Done** to finish creating the service account.
+
+---
+
+## ✅ **Next Steps: Generate a JSON Key File**
+After creating the service account, generate a **JSON key file** to authenticate Terraform with GCP.
+
+### **🔹 Generate the Key**
+1. Click on the **Service Account**.
+2. Go to the **Keys** tab.
+3. Click **Add Key > Create New Key**.
+4. Choose **JSON** and click **Create**.
+5. Download the **JSON file** and **store it securely**.
+
+---
+
+## **🔹 Secure the JSON Key**
+- **DO NOT** commit the JSON key to GitHub or any public repository.
+- Store it securely in **Google Secret Manager**, **Vault**, or a **secure directory**.
+
+---
+
+## **✅ Use the Service Account in Terraform**
+To authenticate Terraform using the **JSON key**, update the **Terraform provider configuration** in provider.tf file.
+
+🚀 Now, you can use this service account for **Terraform deployments in GCP**!
 
 # Step-by-Step Setup
 **Step 1: Clone the Repository**
+
 ```bash
 git clone https://github.com/Sumanth17-git/SRE-Zero-to-Hero.git
 cd terraform/terraform-gcp-workspace
